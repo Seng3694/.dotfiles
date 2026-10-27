@@ -40,5 +40,34 @@ vim.lsp.config("lua_ls", {
   },
 })
 
-vim.lsp.enable({ "clangd", "lua_ls" })
+vim.lsp.config("rust_analyzer", {
+  capabilities = capabilities,
+  on_attach = function(client, bufnr)
+    vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
+      vim.lsp.buf.format({ async = false })
+    end, { desc = "Format current buffer" })
+
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({ async = false })
+      end,
+    })
+  end,
+
+  settings = {
+    ["rust-analyzer"] = {
+      cargo = {
+        buildScripts = {
+          enable = true,
+        },
+      },
+      procMacro = {
+        enable = true,
+      },
+    },
+  },
+})
+
+vim.lsp.enable({ "clangd", "lua_ls", "rust_analyzer" })
 
