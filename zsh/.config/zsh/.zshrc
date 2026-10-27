@@ -18,8 +18,17 @@ TIMEFMT=$'\nreal %mE\nuser %mU\nsys  %mS'
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source_if_exists() {
+  local file="$1"
+  if [[ -f "$file" ]]; then
+    source "$file"
+  fi
+}
+
+source_if_exists /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source_if_exists /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source_if_exists /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source_if_exists /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 export PATH=$PATH:$HOME/.steam/debian-installation/steamapps/common/Aseprite
 export PATH=$PATH:$HOME/.local/bin
